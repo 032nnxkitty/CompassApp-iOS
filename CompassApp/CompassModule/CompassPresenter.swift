@@ -15,9 +15,14 @@ class CompassPresenterImp: NSObject, CompassPresenter {
     private weak var view: CompassView?
     private var locationManager: CLLocationManager!
     
+    private var heading: Double
+    private var direction: Direction
+    
+    // MARK: - Init
     init(view: CompassView) {
         self.view = view
-        
+        self.heading = 0
+        self.direction = .unknown
         super.init()
         
         setup()
@@ -39,7 +44,18 @@ private extension CompassPresenterImp {
 // MARK: - CLLocationManagerDelegate
 extension CompassPresenterImp: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        let angle = newHeading.trueHeading.rounded(.towardZero)
-        view?.updateHeadingLabel(with: "\(angle)°")
+        heading = newHeading.trueHeading
+        
+        view?.updateHeadingLabel(with: String(format: "%.0f°", heading))
+        view?.rotateView(angle: -(heading * .pi / 180))
+        
+        if direction != Direction(angle: heading) {
+            direction = Direction(angle: heading)
+            view?.updateDirectionLabel(with: direction.rawValue.capitalized)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
 }
