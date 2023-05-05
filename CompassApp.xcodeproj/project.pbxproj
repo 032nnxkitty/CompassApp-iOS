@@ -56,15 +56,39 @@
 		10215D532A057AB30087A892 /* CompassApp */ = {
 			isa = PBXGroup;
 			children = (
+				10215D6B2A05B1D20087A892 /* SupportingFiles */,
+				10215D6A2A05B1C50087A892 /* App */,
+				10215D6C2A05B1E90087A892 /* CompassModule */,
+			);
+			path = CompassApp;
+			sourceTree = "<group>";
+		};
+		10215D6A2A05B1C50087A892 /* App */ = {
+			isa = PBXGroup;
+			children = (
 				10215D542A057AB30087A892 /* AppDelegate.swift */,
 				10215D562A057AB30087A892 /* SceneDelegate.swift */,
-				10215D582A057AB30087A892 /* CompassViewController.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		10215D6B2A05B1D20087A892 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
 				10215D5D2A057AB40087A892 /* Assets.xcassets */,
 				10215D5F2A057AB40087A892 /* LaunchScreen.storyboard */,
 				10215D622A057AB40087A892 /* Info.plist */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		10215D6C2A05B1E90087A892 /* CompassModule */ = {
+			isa = PBXGroup;
+			children = (
+				10215D582A057AB30087A892 /* CompassViewController.swift */,
 				10215D682A05AB940087A892 /* CompassPresenter.swift */,
 			);
-			path = CompassApp;
+			path = CompassModule;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -281,7 +305,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RYP579LK57;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CompassApp/Info.plist;
+				INFOPLIST_FILE = CompassApp/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Compass;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -313,7 +337,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RYP579LK57;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CompassApp/Info.plist;
+				INFOPLIST_FILE = CompassApp/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Compass;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

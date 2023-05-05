@@ -33,6 +33,7 @@ class CompassViewController: UIViewController {
     }
 }
 
+// MARK: - CompassView Protocol
 extension CompassViewController: CompassView {
     func updateHeadingLabel(with text: String) {
         angleLabel.text = text
