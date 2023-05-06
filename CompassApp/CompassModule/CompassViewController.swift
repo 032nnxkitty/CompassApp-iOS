@@ -40,8 +40,8 @@ private extension CompassViewController {
     }
     
     func configureAngleAndDirectionLabels() {
-        angleLabel = setupLabel(with: .title3)
-        directionLabel = setupLabel(with: .title3)
+        angleLabel = setupLabel(with: .largeTitle)
+        directionLabel = setupLabel(with: .largeTitle)
         
         view.addSubview(angleLabel)
         view.addSubview(directionLabel)
@@ -98,6 +98,9 @@ extension CompassViewController: CompassView {
     
     func updateDirectionLabel(with text: String) {
         directionLabel.text = text
+        
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
     }
     
     func updateCoordinates(lat: String, lon: String) {
