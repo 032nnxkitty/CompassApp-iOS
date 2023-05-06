@@ -10,14 +10,17 @@ import UIKit
 protocol CompassView: AnyObject {
     func updateHeadingLabel(with text: String)
     func updateDirectionLabel(with text: String)
+    func updateCoordinates(lat: String, lon: String)
     func rotateView(angle: Double)
 }
 
 class CompassViewController: UIViewController {
     var presenter: CompassPresenter!
     
+    // MARK: - UI Elements
     private var angleLabel: UILabel!
     private var directionLabel: UILabel!
+    private var cityCountryLabel: UILabel!
     private var latitudeLabel: UILabel!
     private var longitudeLabel: UILabel!
     
@@ -26,6 +29,7 @@ class CompassViewController: UIViewController {
         super.viewDidLoad()
         configureAppearance()
         configureAngleAndDirectionLabels()
+        configureTopLeftCornerInfo()
     }
 }
 
@@ -51,20 +55,23 @@ private extension CompassViewController {
         ])
     }
     
-    func configureLatitudeAndLongitudeLabels() {
+    func configureTopLeftCornerInfo() {
+        cityCountryLabel = setupLabel(with: .headline)
+        cityCountryLabel.text = "Prague, Czech Republic"
         latitudeLabel = setupLabel(with: .body)
         longitudeLabel = setupLabel(with: .body)
         
-        view.addSubview(latitudeLabel)
-        view.addSubview(longitudeLabel)
-        
+        let stack = createVStack()
+        view.addSubview(stack)
         NSLayoutConstraint.activate([
-            latitudeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            latitudeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            
-            longitudeLabel.topAnchor.constraint(equalTo: latitudeLabel.bottomAnchor, constant: 4),
-            longitudeLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+        
+        stack.addArrangedSubview(cityCountryLabel)
+        stack.addArrangedSubview(latitudeLabel)
+        stack.addArrangedSubview(longitudeLabel)
     }
     
     func setupLabel(with textStyle: UIFont.TextStyle) -> UILabel {
@@ -73,6 +80,13 @@ private extension CompassViewController {
         label.font = .preferredFont(forTextStyle: textStyle)
         label.textColor = .label
         return label
+    }
+    
+    func createVStack() -> UIStackView {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        return stack
     }
 }
 
@@ -84,6 +98,11 @@ extension CompassViewController: CompassView {
     
     func updateDirectionLabel(with text: String) {
         directionLabel.text = text
+    }
+    
+    func updateCoordinates(lat: String, lon: String) {
+        latitudeLabel.text = lat
+        longitudeLabel.text = lon
     }
     
     func rotateView(angle: Double) {

@@ -17,12 +17,17 @@ class CompassPresenterImp: NSObject, CompassPresenter {
     
     private var heading: Double
     private var direction: Direction
+    private var latitude: Double
+    private var longitude: Double
     
     // MARK: - Init
     init(view: CompassView) {
         self.view = view
         self.heading = 0
         self.direction = .unknown
+        
+        self.latitude = 0
+        self.longitude = 0
         
         super.init()
         
@@ -38,6 +43,7 @@ private extension CompassPresenterImp {
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingHeading()
+        locationManager.startUpdatingLocation()
     }
 }
 
@@ -55,6 +61,21 @@ extension CompassPresenterImp: CLLocationManagerDelegate {
         if direction != Direction(angle: heading) {
             direction = Direction(angle: heading)
             view?.updateDirectionLabel(with: direction.rawValue.capitalized)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = manager.location else { return }
+        
+        if abs(latitude - location.coordinate.latitude) > 0.0001, abs(longitude - location.coordinate.longitude) > 0.0001 {
+            
+            latitude = location.coordinate.latitude
+            longitude = location.coordinate.longitude
+            
+            let formattedLat = String(format: "%.6f", latitude)
+            let formattedLon = String(format: "%.6f", longitude)
+            
+            view?.updateCoordinates(lat: "Lat: \(formattedLat)", lon: "Lon: \(formattedLon)")
         }
     }
     
