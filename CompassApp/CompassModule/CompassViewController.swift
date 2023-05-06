@@ -18,7 +18,6 @@ class CompassViewController: UIViewController {
     var presenter: CompassPresenter!
     
     // MARK: - UI Elements
-    private var topStack:         UIStackView!
     private var angleLabel:       UILabel!
     private var directionLabel:   UILabel!
     private var cityCountryLabel: UILabel!
@@ -26,6 +25,13 @@ class CompassViewController: UIViewController {
     private var longitudeLabel:   UILabel!
     private var altitudeLabel:    UILabel!
     private var speedLabel:       UILabel!
+    
+    private let toolBar: UIToolbar = {
+        let toolBar = UIToolbar()
+        toolBar.translatesAutoresizingMaskIntoConstraints = false
+        toolBar.tintColor = .systemRed
+        return toolBar
+    }()
     
     private var compassImageView: UIImageView = {
         let imageView = UIImageView()
@@ -51,45 +57,52 @@ class CompassViewController: UIViewController {
 private extension CompassViewController {
     func configureAppearance() {
         view.backgroundColor = .systemBackground
+        
+//        view.addSubview(toolBar)
+//        NSLayoutConstraint.activate([
+//            toolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+//            toolBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+//            toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+//        ])
+//
+//        toolBar.items = [UIBarButtonItem(systemItem: .flexibleSpace), UIBarButtonItem(systemItem: .action)]
     }
     
     func configureTopInfoLabels() {
-        topStack = createVStack()
+        let stack = createVStack()
         
-        cityCountryLabel = setupLabel(with: .title2)
-        latitudeLabel = setupLabel(with: .title2)
-        longitudeLabel = setupLabel(with: .title2)
-        altitudeLabel = setupLabel(with: .title2)
+        latitudeLabel = setupLabel(with: .largeTitle)
+        longitudeLabel = setupLabel(with: .largeTitle)
+        altitudeLabel = setupLabel(with: .largeTitle)
         
-        view.addSubview(topStack)
+        view.addSubview(stack)
         NSLayoutConstraint.activate([
-            topStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            topStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            topStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
         
-        topStack.addArrangedSubview(cityCountryLabel)
-        topStack.addArrangedSubview(latitudeLabel)
-        topStack.addArrangedSubview(longitudeLabel)
-        topStack.addArrangedSubview(altitudeLabel)
+        stack.addArrangedSubview(latitudeLabel)
+        stack.addArrangedSubview(longitudeLabel)
+        stack.addArrangedSubview(altitudeLabel)
     }
     
     func configureCompassComponents() {
+        let angleArrow = UIImageView()
+        angleArrow.image = UIImage(systemName: "arrowtriangle.down.fill")
+        angleArrow.translatesAutoresizingMaskIntoConstraints = false
+        angleArrow.tintColor = .systemRed
+        view.addSubview(angleArrow)
+        
         view.addSubview(compassImageView)
-        
-        let l = UIImageView(image: UIImage(systemName: "arrowtriangle.down.fill"))
-        l.translatesAutoresizingMaskIntoConstraints = false
-        l.tintColor = .systemRed
-        view.addSubview(l)
-        
         NSLayoutConstraint.activate([
             compassImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -35),
             compassImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: -75),
             compassImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 75),
             compassImageView.heightAnchor.constraint(equalTo: compassImageView.widthAnchor),
             
-            l.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            l.bottomAnchor.constraint(equalTo: compassImageView.topAnchor)
+            angleArrow.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            angleArrow.bottomAnchor.constraint(equalTo: compassImageView.topAnchor)
         ])
     }
     
@@ -113,7 +126,6 @@ private extension CompassViewController {
     
     func setupLabel(with textStyle: UIFont.TextStyle) -> UILabel {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: textStyle)
         label.textColor = .label
         return label
@@ -141,7 +153,6 @@ extension CompassViewController: CompassView {
     }
     
     func updateCoordinates(lat: String, lon: String, alt: String) {
-        cityCountryLabel.text = "Prague, Czech Republic"
         latitudeLabel.text = lat
         longitudeLabel.text = lon
         altitudeLabel.text = alt
