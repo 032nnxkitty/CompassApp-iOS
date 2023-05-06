@@ -12,13 +12,10 @@ enum Direction: String {
     case east
     case south
     case west
-    
     case northEast
     case northWest
-    
     case southEast
     case southWest
-    
     case unknown
     
     init(angle: Double) {

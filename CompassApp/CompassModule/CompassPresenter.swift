@@ -23,11 +23,11 @@ class CompassPresenterImp: NSObject, CompassPresenter {
         self.view = view
         self.heading = 0
         self.direction = .unknown
+        
         super.init()
         
         setup()
     }
-    
 }
 
 // MARK: - Private Methods
@@ -46,8 +46,11 @@ extension CompassPresenterImp: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         heading = newHeading.trueHeading
         
-        view?.updateHeadingLabel(with: String(format: "%.0f°", heading))
-        view?.rotateView(angle: -(heading * .pi / 180))
+        let headingLabelText = String(format: "%.0f°", heading)
+        let rotatingAngle = -(heading * .pi / 180)
+        
+        view?.updateHeadingLabel(with: headingLabelText)
+        view?.rotateView(angle: rotatingAngle)
         
         if direction != Direction(angle: heading) {
             direction = Direction(angle: heading)

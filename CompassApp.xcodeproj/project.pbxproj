@@ -58,9 +58,9 @@
 		10215D532A057AB30087A892 /* CompassApp */ = {
 			isa = PBXGroup;
 			children = (
-				10215D6B2A05B1D20087A892 /* SupportingFiles */,
 				10215D6A2A05B1C50087A892 /* App */,
 				10215D6C2A05B1E90087A892 /* CompassModule */,
+				10215D6B2A05B1D20087A892 /* SupportingFiles */,
 			);
 			path = CompassApp;
 			sourceTree = "<group>";
