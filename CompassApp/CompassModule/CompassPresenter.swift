@@ -19,6 +19,7 @@ class CompassPresenterImp: NSObject, CompassPresenter {
     private var direction: Direction
     private var latitude: Double
     private var longitude: Double
+    private var altitude: Double
     
     // MARK: - Init
     init(view: CompassView) {
@@ -28,6 +29,7 @@ class CompassPresenterImp: NSObject, CompassPresenter {
         
         self.latitude = 0
         self.longitude = 0
+        self.altitude = 0
         
         super.init()
         
@@ -71,11 +73,15 @@ extension CompassPresenterImp: CLLocationManagerDelegate {
             
             latitude = location.coordinate.latitude
             longitude = location.coordinate.longitude
+            altitude = location.altitude
             
             let formattedLat = String(format: "%.6f", latitude)
             let formattedLon = String(format: "%.6f", longitude)
+            let formattedAlt = String(format: "%.0f m", altitude)
             
-            view?.updateCoordinates(lat: "Lat: \(formattedLat)", lon: "Lon: \(formattedLon)")
+            view?.updateCoordinates(lat: "Latitude: \(formattedLat)",
+                                    lon: "Longitude: \(formattedLon)",
+                                    alt: "Altitude: \(formattedAlt)")
         }
     }
     

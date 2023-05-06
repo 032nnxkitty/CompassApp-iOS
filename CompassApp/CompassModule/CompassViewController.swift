@@ -10,7 +10,7 @@ import UIKit
 protocol CompassView: AnyObject {
     func updateHeadingLabel(with text: String)
     func updateDirectionLabel(with text: String)
-    func updateCoordinates(lat: String, lon: String)
+    func updateCoordinates(lat: String, lon: String, alt: String)
     func rotateView(angle: Double)
 }
 
