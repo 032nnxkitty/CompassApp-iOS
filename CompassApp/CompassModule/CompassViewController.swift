@@ -18,18 +18,32 @@ class CompassViewController: UIViewController {
     var presenter: CompassPresenter!
     
     // MARK: - UI Elements
-    private var angleLabel: UILabel!
-    private var directionLabel: UILabel!
+    private var topStack:         UIStackView!
+    private var angleLabel:       UILabel!
+    private var directionLabel:   UILabel!
     private var cityCountryLabel: UILabel!
-    private var latitudeLabel: UILabel!
-    private var longitudeLabel: UILabel!
+    private var latitudeLabel:    UILabel!
+    private var longitudeLabel:   UILabel!
+    private var altitudeLabel:    UILabel!
+    private var speedLabel:       UILabel!
+    
+    private var compassImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        imageView.image = UIImage(named: "degrees")
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .label
+        return imageView
+    }()
     
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAppearance()
+        configureTopInfoLabels()
+        configureCompassComponents()
         configureAngleAndDirectionLabels()
-        configureTopLeftCornerInfo()
     }
 }
 
@@ -39,39 +53,62 @@ private extension CompassViewController {
         view.backgroundColor = .systemBackground
     }
     
+    func configureTopInfoLabels() {
+        topStack = createVStack()
+        
+        cityCountryLabel = setupLabel(with: .title2)
+        latitudeLabel = setupLabel(with: .title2)
+        longitudeLabel = setupLabel(with: .title2)
+        altitudeLabel = setupLabel(with: .title2)
+        
+        view.addSubview(topStack)
+        NSLayoutConstraint.activate([
+            topStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            topStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            topStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        ])
+        
+        topStack.addArrangedSubview(cityCountryLabel)
+        topStack.addArrangedSubview(latitudeLabel)
+        topStack.addArrangedSubview(longitudeLabel)
+        topStack.addArrangedSubview(altitudeLabel)
+    }
+    
+    func configureCompassComponents() {
+        view.addSubview(compassImageView)
+        
+        let l = UIImageView(image: UIImage(systemName: "arrowtriangle.down.fill"))
+        l.translatesAutoresizingMaskIntoConstraints = false
+        l.tintColor = .systemRed
+        view.addSubview(l)
+        
+        NSLayoutConstraint.activate([
+            compassImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -35),
+            compassImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: -75),
+            compassImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 75),
+            compassImageView.heightAnchor.constraint(equalTo: compassImageView.widthAnchor),
+            
+            l.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            l.bottomAnchor.constraint(equalTo: compassImageView.topAnchor)
+        ])
+    }
+    
     func configureAngleAndDirectionLabels() {
         angleLabel = setupLabel(with: .largeTitle)
         directionLabel = setupLabel(with: .largeTitle)
         
-        view.addSubview(angleLabel)
-        view.addSubview(directionLabel)
-        
-        NSLayoutConstraint.activate([
-            angleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            angleLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            
-            directionLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            directionLabel.topAnchor.constraint(equalTo: angleLabel.bottomAnchor),
-        ])
-    }
-    
-    func configureTopLeftCornerInfo() {
-        cityCountryLabel = setupLabel(with: .headline)
-        cityCountryLabel.text = "Prague, Czech Republic"
-        latitudeLabel = setupLabel(with: .body)
-        longitudeLabel = setupLabel(with: .body)
-        
         let stack = createVStack()
-        view.addSubview(stack)
-        NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-        ])
+        stack.alignment = .center
         
-        stack.addArrangedSubview(cityCountryLabel)
-        stack.addArrangedSubview(latitudeLabel)
-        stack.addArrangedSubview(longitudeLabel)
+        stack.addArrangedSubview(angleLabel)
+        stack.addArrangedSubview(directionLabel)
+        
+        view.addSubview(stack)
+        
+        NSLayoutConstraint.activate([
+            stack.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            stack.topAnchor.constraint(equalTo: compassImageView.topAnchor, constant: 100),
+        ])
     }
     
     func setupLabel(with textStyle: UIFont.TextStyle) -> UILabel {
@@ -103,13 +140,17 @@ extension CompassViewController: CompassView {
         generator.impactOccurred()
     }
     
-    func updateCoordinates(lat: String, lon: String) {
+    func updateCoordinates(lat: String, lon: String, alt: String) {
+        cityCountryLabel.text = "Prague, Czech Republic"
         latitudeLabel.text = lat
         longitudeLabel.text = lon
+        altitudeLabel.text = alt
     }
     
     func rotateView(angle: Double) {
-        // compassView.transform = CGAffineTransform(rotationAngle: -angle)
+        UIView.animate(withDuration: 0.2) {
+            self.compassImageView.transform = CGAffineTransform(rotationAngle: angle)
+        }
     }
 }
 
