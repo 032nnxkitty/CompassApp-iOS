@@ -14,6 +14,7 @@
 		10215D612A057AB40087A892 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10215D5F2A057AB40087A892 /* LaunchScreen.storyboard */; };
 		10215D692A05AB940087A892 /* CompassPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D682A05AB940087A892 /* CompassPresenter.swift */; };
 		10215D702A05BDF90087A892 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D6F2A05BDF90087A892 /* Direction.swift */; };
+		10215D722A0700A90087A892 /* Double+LatitudeLongitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D712A0700A90087A892 /* Double+LatitudeLongitude.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		10215D622A057AB40087A892 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10215D682A05AB940087A892 /* CompassPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompassPresenter.swift; sourceTree = "<group>"; };
 		10215D6F2A05BDF90087A892 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		10215D712A0700A90087A892 /* Double+LatitudeLongitude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+LatitudeLongitude.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				10215D5F2A057AB40087A892 /* LaunchScreen.storyboard */,
 				10215D622A057AB40087A892 /* Info.plist */,
 				10215D6F2A05BDF90087A892 /* Direction.swift */,
+				10215D712A0700A90087A892 /* Double+LatitudeLongitude.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -164,6 +167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10215D722A0700A90087A892 /* Double+LatitudeLongitude.swift in Sources */,
 				10215D692A05AB940087A892 /* CompassPresenter.swift in Sources */,
 				10215D592A057AB30087A892 /* CompassViewController.swift in Sources */,
 				10215D552A057AB30087A892 /* AppDelegate.swift in Sources */,

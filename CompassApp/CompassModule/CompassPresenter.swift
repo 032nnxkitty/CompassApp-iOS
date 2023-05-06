@@ -75,13 +75,13 @@ extension CompassPresenterImp: CLLocationManagerDelegate {
             longitude = location.coordinate.longitude
             altitude = location.altitude
             
-            let formattedLat = String(format: "%.6f", latitude)
-            let formattedLon = String(format: "%.6f", longitude)
-            let formattedAlt = String(format: "%.0f m", altitude)
+            let formattedLat = latitude.formatLatitude()
+            let formattedLon = longitude.formatLongitude()
+            let formattedAlt = String(format: "%.0fm %@", altitude, "Elevation")
             
-            view?.updateCoordinates(lat: "Latitude: \(formattedLat)",
-                                    lon: "Longitude: \(formattedLon)",
-                                    alt: "Altitude: \(formattedAlt)")
+            view?.updateCoordinates(lat: formattedLat,
+                                    lon: formattedLon,
+                                    alt: formattedAlt)
         }
     }
     
