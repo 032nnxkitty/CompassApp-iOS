@@ -11,6 +11,7 @@ protocol CompassPresenter {
     func shareButtonDidTap()
     func targetButtonDidTap()
     func addTarget(angle: String?)
+    func deleteTarget()
 }
 
 class CompassPresenterImp: NSObject, CompassPresenter {
@@ -35,7 +36,7 @@ class CompassPresenterImp: NSObject, CompassPresenter {
     
     // MARK: - Public Methods
     func shareButtonDidTap() {
-        print("Share")
+        view?.presentShareController(textToShare: "Latitude: \(latitude)\nLongitude: \(longitude)\nElevation: \(Int(altitude))m")
     }
     
     func targetButtonDidTap() {
@@ -45,8 +46,7 @@ class CompassPresenterImp: NSObject, CompassPresenter {
             view?.presentAddTargetAlert(with: "\(currentAngle)")
         } else {
             // Delete target
-            targetAngle = nil
-            view?.updateTargetState(label: "No target", button: "Add target")
+            view?.presentConfirmationActionSheet()
         }
     }
     
@@ -54,6 +54,11 @@ class CompassPresenterImp: NSObject, CompassPresenter {
         guard let angle, let numAngle = Int(angle), (0...360).contains(numAngle) else { return }
         targetAngle = numAngle
         view?.updateTargetState(label: "Target: \(numAngle)°", button: "Delete target")
+    }
+    
+    func deleteTarget() {
+        targetAngle = nil
+        view?.updateTargetState(label: "No target", button: "Add target")
     }
 }
 

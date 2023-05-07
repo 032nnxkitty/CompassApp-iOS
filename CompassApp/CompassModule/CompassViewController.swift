@@ -20,6 +20,8 @@ protocol CompassView: AnyObject {
     func rotateCompass(angle: Double)
     
     func presentAddTargetAlert(with text: String)
+    func presentConfirmationActionSheet()
+    func presentShareController(textToShare text: String)
 }
 
 class CompassViewController: UIViewController {
@@ -129,17 +131,16 @@ private extension CompassViewController {
         directionContainerStack = createVStack()
         directionContainerStack.alignment = .center
         
-        targetLabel.text = "No target"
-        targetLabel.alpha = 0.6
-        
-        [angleLabel, directionLabel, targetLabel].forEach { directionContainerStack.addArrangedSubview($0) }
-        
         view.addSubview(directionContainerStack)
-        
         NSLayoutConstraint.activate([
             directionContainerStack.centerXAnchor.constraint(equalTo: compassImageView.centerXAnchor),
             directionContainerStack.centerYAnchor.constraint(equalTo: compassImageView.centerYAnchor),
         ])
+        
+        targetLabel.text = "No target"
+        targetLabel.alpha = 0.6
+        
+        [angleLabel, directionLabel, targetLabel].forEach { directionContainerStack.addArrangedSubview($0) }
     }
     
     func createVStack() -> UIStackView {
@@ -195,12 +196,14 @@ extension CompassViewController: CompassView {
     }
     
     func setNormalBackground() {
+        guard view.backgroundColor != .systemBackground else { return }
         UIView.animate(withDuration: 0.4) {
             self.view.backgroundColor = .systemBackground
         }
     }
     
     func setTargetBackground() {
+        guard view.backgroundColor != .systemGreen else { return }
         UIView.animate(withDuration: 0.4) {
             self.view.backgroundColor = .systemGreen
         }
@@ -225,6 +228,26 @@ extension CompassViewController: CompassView {
         alert.addAction(addAction)
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func presentConfirmationActionSheet() {
+        let actionSheet = UIAlertController(title: "Delete target", message: "", preferredStyle: .actionSheet)
+        let confirm = UIAlertAction(title: "Confirm", style: .destructive) { [weak self] _ in
+            self?.presenter.deleteTarget()
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        [confirm, cancel].forEach { actionSheet.addAction($0) }
+        present(actionSheet, animated: true)
+    }
+    
+    func presentShareController(textToShare text: String) {
+        let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+        activityVC.popoverPresentationController?.barButtonItem = shareButton
+        
+        // https://stackoverflow.com/questions/58911158/why-is-uiactivityviewcontroller-displaying-auto-constraint-errors-in-console
+        DispatchQueue.main.async {
+            self.present(activityVC, animated: true)
+        }
     }
 }
 

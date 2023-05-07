@@ -10,11 +10,13 @@ import UIKit
 extension UILabel {
     convenience init(textStyle: UIFont.TextStyle) {
         self.init(frame: .zero)
+        self.text = "..."
         self.font = .preferredFont(forTextStyle: textStyle)
     }
     
     convenience init(withMonoFontSize size: CGFloat) {
         self.init(frame: .zero)
+        self.text = "..."
         self.font = .monospacedSystemFont(ofSize: size, weight: .regular)
     }
 }
