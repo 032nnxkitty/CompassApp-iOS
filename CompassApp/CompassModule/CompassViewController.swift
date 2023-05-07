@@ -26,7 +26,7 @@ class CompassViewController: UIViewController {
     private var speedLabel:       UILabel!
     
     private let toolBar: UIToolbar = {
-        let toolBar = UIToolbar()
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
         toolBar.translatesAutoresizingMaskIntoConstraints = false
         toolBar.tintColor = .systemRed
         return toolBar
@@ -57,22 +57,22 @@ private extension CompassViewController {
     func configureAppearance() {
         view.backgroundColor = .systemBackground
         
-//        view.addSubview(toolBar)
-//        NSLayoutConstraint.activate([
-//            toolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-//            toolBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-//            toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-//        ])
-//
-//        toolBar.items = [UIBarButtonItem(systemItem: .flexibleSpace), UIBarButtonItem(systemItem: .action)]
+        view.addSubview(toolBar)
+        NSLayoutConstraint.activate([
+            toolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            toolBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
+
+        toolBar.items = [UIBarButtonItem(systemItem: .flexibleSpace), UIBarButtonItem(systemItem: .action)]
     }
     
     func configureTopInfoLabels() {
         let stack = createVStack()
         
-        latitudeLabel  = UILabel(textStyle: .largeTitle)
-        longitudeLabel = UILabel(textStyle: .largeTitle)
-        altitudeLabel  = UILabel(textStyle: .largeTitle)
+        latitudeLabel  = UILabel(textStyle: .title1)
+        longitudeLabel = UILabel(textStyle: .title1)
+        altitudeLabel  = UILabel(textStyle: .title1)
         
         view.addSubview(stack)
         NSLayoutConstraint.activate([
@@ -95,7 +95,7 @@ private extension CompassViewController {
         
         view.addSubview(compassImageView)
         NSLayoutConstraint.activate([
-            compassImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -35),
+            compassImageView.centerYAnchor.constraint(equalTo: toolBar.topAnchor, constant: -16),
             compassImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: -75),
             compassImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 75),
             compassImageView.heightAnchor.constraint(equalTo: compassImageView.widthAnchor),
