@@ -8,7 +8,7 @@
 import CoreLocation
 
 protocol CompassPresenter {
-    
+    func shareButtonDidTap()
 }
 
 class CompassPresenterImp: NSObject, CompassPresenter {
@@ -34,6 +34,11 @@ class CompassPresenterImp: NSObject, CompassPresenter {
         super.init()
         
         setup()
+    }
+    
+    // MARK: - Public Methods
+    func shareButtonDidTap() {
+        print("Share")
     }
 }
 
@@ -77,7 +82,7 @@ extension CompassPresenterImp: CLLocationManagerDelegate {
             
             let formattedLat = latitude.formatLatitude()
             let formattedLon = longitude.formatLongitude()
-            let formattedAlt = String(format: "%.0fm %@", altitude, "Elevation")
+            let formattedAlt = String(format: "%@ %.0fm", "Elevation", altitude)
             
             view?.updateCoordinates(lat: formattedLat,
                                     lon: formattedLon,
