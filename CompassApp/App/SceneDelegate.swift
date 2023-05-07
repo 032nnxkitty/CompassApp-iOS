@@ -21,6 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = compassView
+        window?.overrideUserInterfaceStyle = .dark
         window?.makeKeyAndVisible()
     }
 }
