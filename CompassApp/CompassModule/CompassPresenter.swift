@@ -10,7 +10,6 @@ import CoreLocation
 protocol CompassPresenter {
     func shareButtonDidTap()
     func targetButtonDidTap()
-    
     func addTarget(angle: String?)
 }
 
@@ -18,27 +17,19 @@ class CompassPresenterImp: NSObject, CompassPresenter {
     private weak var view: CompassView?
     private var locationManager: CLLocationManager!
     
-    private var heading:   Double
-    private var direction: Direction
-    private var latitude:  Double
-    private var longitude: Double
-    private var altitude:  Double
+    private var direction: Direction = .unknown
+    private var heading:   Double = 0
+    
+    private var latitude:  Double = 0
+    private var longitude: Double = 0
+    private var altitude:  Double = 0
     
     private var targetAngle: Int?
     
     // MARK: - Init
     init(view: CompassView) {
         self.view = view
-        
-        self.heading = 0
-        self.direction = .unknown
-        
-        self.latitude = 0
-        self.longitude = 0
-        self.altitude = 0
-        
         super.init()
-        
         setup()
     }
     

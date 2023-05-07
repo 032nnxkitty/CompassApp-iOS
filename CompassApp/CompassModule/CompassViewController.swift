@@ -29,13 +29,13 @@ class CompassViewController: UIViewController {
     private var coordinatesContainerStack: UIStackView!
     private var directionContainerStack:   UIStackView!
     
-    private var localityLabel:  UILabel!
-    private var latitudeLabel:  UILabel!
-    private var longitudeLabel: UILabel!
-    private var altitudeLabel:  UILabel!
-    private var angleLabel:     UILabel!
-    private var directionLabel: UILabel!
-    private var targetLabel:    UILabel!
+    private let localityLabel  = UILabel(textStyle: .largeTitle)
+    private let latitudeLabel  = UILabel(withMonoFontSize: 17)
+    private let longitudeLabel = UILabel(withMonoFontSize: 17)
+    private let altitudeLabel  = UILabel(withMonoFontSize: 17)
+    private let angleLabel     = UILabel(textStyle: .largeTitle)
+    private let directionLabel = UILabel(textStyle: .largeTitle)
+    private let targetLabel    = UILabel(textStyle: .title3)
     
     
     private var compassImageView: UIImageView = {
@@ -96,15 +96,6 @@ private extension CompassViewController {
     func configureTopInfoLabels() {
         coordinatesContainerStack = createVStack()
         
-        localityLabel  = UILabel(textStyle: .largeTitle)
-        latitudeLabel  = UILabel(textStyle: .title2)
-        longitudeLabel = UILabel(textStyle: .title2)
-        altitudeLabel  = UILabel(textStyle: .title2)
-        
-        [latitudeLabel, longitudeLabel, altitudeLabel].forEach {
-            $0.font  = .monospacedSystemFont(ofSize: 17, weight: .regular)
-        }
-        
         view.addSubview(coordinatesContainerStack)
         NSLayoutConstraint.activate([
             coordinatesContainerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -138,9 +129,6 @@ private extension CompassViewController {
         directionContainerStack = createVStack()
         directionContainerStack.alignment = .center
         
-        angleLabel = UILabel(textStyle: .largeTitle)
-        directionLabel = UILabel(textStyle: .largeTitle)
-        targetLabel = UILabel(textStyle: .title3)
         targetLabel.text = "No target"
         targetLabel.alpha = 0.6
         

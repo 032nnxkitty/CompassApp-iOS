@@ -12,4 +12,9 @@ extension UILabel {
         self.init(frame: .zero)
         self.font = .preferredFont(forTextStyle: textStyle)
     }
+    
+    convenience init(withMonoFontSize size: CGFloat) {
+        self.init(frame: .zero)
+        self.font = .monospacedSystemFont(ofSize: size, weight: .regular)
+    }
 }
