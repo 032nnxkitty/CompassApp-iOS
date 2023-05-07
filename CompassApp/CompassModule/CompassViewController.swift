@@ -20,7 +20,6 @@ class CompassViewController: UIViewController {
     // MARK: - UI Elements
     private var angleLabel:       UILabel!
     private var directionLabel:   UILabel!
-    private var cityCountryLabel: UILabel!
     private var latitudeLabel:    UILabel!
     private var longitudeLabel:   UILabel!
     private var altitudeLabel:    UILabel!
@@ -71,9 +70,9 @@ private extension CompassViewController {
     func configureTopInfoLabels() {
         let stack = createVStack()
         
-        latitudeLabel = setupLabel(with: .largeTitle)
-        longitudeLabel = setupLabel(with: .largeTitle)
-        altitudeLabel = setupLabel(with: .largeTitle)
+        latitudeLabel  = UILabel(textStyle: .largeTitle)
+        longitudeLabel = UILabel(textStyle: .largeTitle)
+        altitudeLabel  = UILabel(textStyle: .largeTitle)
         
         view.addSubview(stack)
         NSLayoutConstraint.activate([
@@ -107,8 +106,8 @@ private extension CompassViewController {
     }
     
     func configureAngleAndDirectionLabels() {
-        angleLabel = setupLabel(with: .largeTitle)
-        directionLabel = setupLabel(with: .largeTitle)
+        angleLabel = UILabel(textStyle: .largeTitle)
+        directionLabel = UILabel(textStyle: .largeTitle)
         
         let stack = createVStack()
         stack.alignment = .center
@@ -122,13 +121,6 @@ private extension CompassViewController {
             stack.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             stack.topAnchor.constraint(equalTo: compassImageView.topAnchor, constant: 100),
         ])
-    }
-    
-    func setupLabel(with textStyle: UIFont.TextStyle) -> UILabel {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: textStyle)
-        label.textColor = .label
-        return label
     }
     
     func createVStack() -> UIStackView {
