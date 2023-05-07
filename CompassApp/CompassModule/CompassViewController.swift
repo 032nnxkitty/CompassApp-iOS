@@ -101,9 +101,9 @@ private extension CompassViewController {
         longitudeLabel = UILabel(textStyle: .title2)
         altitudeLabel  = UILabel(textStyle: .title2)
         
-        latitudeLabel.font  = .monospacedSystemFont(ofSize: 17, weight: .regular)
-        longitudeLabel.font = .monospacedSystemFont(ofSize: 17, weight: .regular)
-        altitudeLabel.font  = .monospacedSystemFont(ofSize: 17, weight: .regular)
+        [latitudeLabel, longitudeLabel, altitudeLabel].forEach {
+            $0.font  = .monospacedSystemFont(ofSize: 17, weight: .regular)
+        }
         
         view.addSubview(coordinatesContainerStack)
         NSLayoutConstraint.activate([
@@ -112,10 +112,7 @@ private extension CompassViewController {
             coordinatesContainerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
         
-        coordinatesContainerStack.addArrangedSubview(localityLabel)
-        coordinatesContainerStack.addArrangedSubview(latitudeLabel)
-        coordinatesContainerStack.addArrangedSubview(longitudeLabel)
-        coordinatesContainerStack.addArrangedSubview(altitudeLabel)
+        [localityLabel, latitudeLabel, longitudeLabel, altitudeLabel].forEach { coordinatesContainerStack.addArrangedSubview($0) }
     }
     
     func configureCompassComponents() {
@@ -147,9 +144,7 @@ private extension CompassViewController {
         targetLabel.text = "No target"
         targetLabel.alpha = 0.6
         
-        directionContainerStack.addArrangedSubview(angleLabel)
-        directionContainerStack.addArrangedSubview(directionLabel)
-        directionContainerStack.addArrangedSubview(targetLabel)
+        [angleLabel, directionLabel, targetLabel].forEach { directionContainerStack.addArrangedSubview($0) }
         
         view.addSubview(directionContainerStack)
         
