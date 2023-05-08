@@ -33,11 +33,9 @@ final class CompassViewController: UIViewController {
     private let longitudeLabel = UILabel(withMonoFontSize: 17)
     private let altitudeLabel  = UILabel(withMonoFontSize: 17)
     private let angleLabel     = UILabel(textStyle: .largeTitle)
-    
     private let directionLabel = UILabel(textStyle: .largeTitle)
     
-    
-    private var compassImageView: UIImageView = {
+    private let compassImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -47,6 +45,15 @@ final class CompassViewController: UIViewController {
         return imageView
     }()
     
+    private let targetTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Add target"
+        textField.keyboardType = .numberPad
+        textField.textAlignment = .center
+        textField.textColor = .systemRed
+        return textField
+    }()
+    
     private let toolBar: UIToolbar = {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
         toolBar.translatesAutoresizingMaskIntoConstraints = false
@@ -54,9 +61,6 @@ final class CompassViewController: UIViewController {
         return toolBar
     }()
     
-    private var shareButton: UIBarButtonItem!
-    
-    private var targetTextField: UITextField!
     private var targetPicker: UIPickerView!
     
     // MARK: - View life cycle
@@ -66,7 +70,7 @@ final class CompassViewController: UIViewController {
         configureToolBar()
         configureTopInfoLabels()
         configureCompassComponents()
-        configureAngleAndDirectionLabels()
+        configureDirectionSection()
     }
 }
 
@@ -74,8 +78,8 @@ final class CompassViewController: UIViewController {
 private extension CompassViewController {
     func configureAppearance() {
         view.backgroundColor = .systemBackground
-        
     }
+    
     func configureToolBar() {
         view.addSubview(toolBar)
         NSLayoutConstraint.activate([
@@ -84,9 +88,7 @@ private extension CompassViewController {
             toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        //targetButton = UIBarButtonItem(title: "Add target", style: .plain, target: self, action: #selector(targetButtonDidTap))
-        shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonDidTap))
-        
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonDidTap))
         toolBar.items = [UIBarButtonItem(systemItem: .flexibleSpace), shareButton]
     }
     
@@ -122,7 +124,7 @@ private extension CompassViewController {
         ])
     }
     
-    func configureAngleAndDirectionLabels() {
+    func configureDirectionSection() {
         directionContainerStack = createVStack()
         directionContainerStack.alignment = .center
         
@@ -131,17 +133,10 @@ private extension CompassViewController {
             directionContainerStack.centerXAnchor.constraint(equalTo: compassImageView.centerXAnchor),
             directionContainerStack.centerYAnchor.constraint(equalTo: compassImageView.centerYAnchor),
         ])
-        targetTextField = UITextField()
-        targetTextField.placeholder = "Add target"
-        targetTextField.keyboardType = .numberPad
-        targetTextField.delegate = self
-        targetTextField.textAlignment = .center
-        targetTextField.textColor = .systemRed
         
         targetPicker = UIPickerView()
         targetPicker.delegate = self
         targetPicker.dataSource = self
-        
         targetTextField.inputView = targetPicker
         
         [angleLabel, directionLabel, targetTextField].forEach { directionContainerStack.addArrangedSubview($0) }
@@ -158,10 +153,6 @@ private extension CompassViewController {
 @objc private extension CompassViewController {
     func shareButtonDidTap() {
         presenter.shareButtonDidTap()
-    }
-    
-    func targetButtonDidTap() {
-        //presenter.targetButtonDidTap()
     }
 }
 
@@ -202,6 +193,7 @@ extension CompassViewController: CompassView {
         guard view.backgroundColor != .systemBackground else { return }
         UIView.animate(withDuration: 0.4) {
             self.view.backgroundColor = .systemBackground
+            self.targetTextField.textColor = .systemRed
         }
     }
     
@@ -209,23 +201,17 @@ extension CompassViewController: CompassView {
         guard view.backgroundColor != .systemGreen else { return }
         UIView.animate(withDuration: 0.4) {
             self.view.backgroundColor = .systemGreen
+            self.targetTextField.textColor = .white
         }
     }
     
+    // https://stackoverflow.com/questions/58911158/why-is-uiactivityviewcontroller-displaying-auto-constraint-errors-in-console
     func presentShareController(textToShare text: String) {
         let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-        activityVC.popoverPresentationController?.barButtonItem = shareButton
-        
-        // https://stackoverflow.com/questions/58911158/why-is-uiactivityviewcontroller-displaying-auto-constraint-errors-in-console
         DispatchQueue.main.async {
             self.present(activityVC, animated: true)
         }
     }
-}
-
-// MARK: - UITextFieldDelegate
-extension CompassViewController: UITextFieldDelegate {
-    
 }
 
 // MARK: - UIPickerViewDataSource
