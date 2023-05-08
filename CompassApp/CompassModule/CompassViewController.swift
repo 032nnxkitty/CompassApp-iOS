@@ -48,7 +48,6 @@ final class CompassViewController: UIViewController {
     private let targetTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Add target"
-        textField.keyboardType = .numberPad
         textField.textAlignment = .center
         textField.textColor = .systemRed
         return textField
@@ -61,22 +60,34 @@ final class CompassViewController: UIViewController {
         return toolBar
     }()
     
-    private var targetPicker: UIPickerView!
+    private lazy var targetPicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
+        return picker
+    }()
     
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAppearance()
         configureToolBar()
-        configureTopInfoLabels()
         configureCompassComponents()
         configureDirectionSection()
+        configureLocationLabels()
+    }
+    
+    // MARK: - Event Handling
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        targetTextField.resignFirstResponder()
     }
 }
 
 // MARK: - Private Methods
 private extension CompassViewController {
     func configureAppearance() {
+        title = "Compass"
         view.backgroundColor = .systemBackground
     }
     
@@ -88,21 +99,8 @@ private extension CompassViewController {
             toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonDidTap))
-        toolBar.items = [UIBarButtonItem(systemItem: .flexibleSpace), shareButton]
-    }
-    
-    func configureTopInfoLabels() {
-        coordinatesContainerStack = createVStack()
-        
-        view.addSubview(coordinatesContainerStack)
-        NSLayoutConstraint.activate([
-            coordinatesContainerStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            coordinatesContainerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            coordinatesContainerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        ])
-        
-        [localityLabel, latitudeLabel, longitudeLabel, altitudeLabel].forEach { coordinatesContainerStack.addArrangedSubview($0) }
+        toolBar.items = [UIBarButtonItem(systemItem: .flexibleSpace),
+                         UIBarButtonItem(barButtonSystemItem: .action,target: self, action: #selector(shareButtonDidTap))]
     }
     
     func configureCompassComponents() {
@@ -114,7 +112,7 @@ private extension CompassViewController {
         
         view.addSubview(compassImageView)
         NSLayoutConstraint.activate([
-            compassImageView.topAnchor.constraint(equalTo: coordinatesContainerStack.bottomAnchor, constant: 48),
+            compassImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             compassImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             compassImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             compassImageView.heightAnchor.constraint(equalTo: compassImageView.widthAnchor),
@@ -126,7 +124,6 @@ private extension CompassViewController {
     
     func configureDirectionSection() {
         directionContainerStack = createVStack()
-        directionContainerStack.alignment = .center
         
         view.addSubview(directionContainerStack)
         NSLayoutConstraint.activate([
@@ -134,17 +131,28 @@ private extension CompassViewController {
             directionContainerStack.centerYAnchor.constraint(equalTo: compassImageView.centerYAnchor),
         ])
         
-        targetPicker = UIPickerView()
-        targetPicker.delegate = self
-        targetPicker.dataSource = self
         targetTextField.inputView = targetPicker
         
         [angleLabel, directionLabel, targetTextField].forEach { directionContainerStack.addArrangedSubview($0) }
     }
     
+    func configureLocationLabels() {
+        coordinatesContainerStack = createVStack()
+        
+        view.addSubview(coordinatesContainerStack)
+        NSLayoutConstraint.activate([
+            coordinatesContainerStack.topAnchor.constraint(equalTo: compassImageView.bottomAnchor, constant: 16),
+            coordinatesContainerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            coordinatesContainerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        ])
+        [latitudeLabel, longitudeLabel, altitudeLabel].forEach { $0.alpha = 0.7 }
+        [localityLabel, latitudeLabel, longitudeLabel, altitudeLabel].forEach { coordinatesContainerStack.addArrangedSubview($0) }
+    }
+    
     func createVStack() -> UIStackView {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.alignment = .center
         stack.axis = .vertical
         return stack
     }
@@ -221,11 +229,11 @@ extension CompassViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        presenter.getNumberOfTargets()
+        return presenter.getNumberOfTargets()
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        presenter.getTitleForTarget(at: row)
+        return presenter.getTitleForTarget(at: row)
     }
 }
 

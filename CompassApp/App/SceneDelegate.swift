@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         compassView.presenter = compassPresenter
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = compassView
+        window?.rootViewController = UINavigationController(rootViewController: compassView)
         window?.overrideUserInterfaceStyle = .dark
         window?.makeKeyAndVisible()
     }
