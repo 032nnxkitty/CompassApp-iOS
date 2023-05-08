@@ -6,7 +6,7 @@ iOS compass app
 ![Swift](https://img.shields.io/badge/-Swift-orange.svg)
 ![UIKit](https://img.shields.io/badge/-UIKit-purple.svg)
 
-<img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/1.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/2.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/3.png" width="200"> <img src="https://github.com/032nnxkitty/DogeExplorerApp_iOS/blob/main/Screenshots/4.png" width="200"> 
+<img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/1.png" width="200"> <img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/2.png" width="200"> <img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/3.png" width="200"> <img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/4.png" width="200"> 
 
 ## Features
 - MVP (Model View Presenter) architecture
