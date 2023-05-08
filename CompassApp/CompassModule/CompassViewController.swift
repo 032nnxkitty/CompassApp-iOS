@@ -7,22 +7,25 @@
 
 import UIKit
 
-protocol CompassView: AnyObject {
+typealias CompassViewProtocol = CompassViewInformationUpdating & CompassViewUIUpdating
+
+protocol CompassViewInformationUpdating: AnyObject {
     func updateHeadingLabel(with text: String)
     func updateDirectionLabel(with text: String)
     func updateCoordinates(lat: String, lon: String, alt: String)
     func updateLocality(_ locality: String)
     func updateTargetInfo(targetText: String?)
-    
+}
+
+protocol CompassViewUIUpdating: AnyObject {
     func setNormalBackground()
     func setTargetBackground()
-    
     func rotateCompass(angle: Double)
     func presentShareController(textToShare text: String)
 }
 
 final class CompassViewController: UIViewController {
-    var presenter: CompassPresenter!
+    var presenter: CompassPresenterProtocol!
     
     // MARK: - UI Elements
     private var coordinatesContainerStack: UIStackView!
@@ -165,7 +168,7 @@ private extension CompassViewController {
 }
 
 // MARK: - CompassView Protocol
-extension CompassViewController: CompassView {
+extension CompassViewController: CompassViewProtocol {
     func updateHeadingLabel(with text: String) {
         angleLabel.text = text
     }

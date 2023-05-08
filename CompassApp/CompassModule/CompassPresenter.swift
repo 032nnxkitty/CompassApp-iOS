@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-protocol CompassPresenter {
+protocol CompassPresenterProtocol {
     func shareButtonDidTap()
     func didSelectTarget(_ index: Int)
     
@@ -15,8 +15,8 @@ protocol CompassPresenter {
     func getTitleForTarget(at row: Int) -> String
 }
 
-final class CompassPresenterImp: NSObject, CompassPresenter {
-    private weak var view: CompassView?
+final class CompassPresenterImp: NSObject, CompassPresenterProtocol {
+    private weak var view: CompassViewProtocol?
     private var locationManager: CLLocationManager!
     
     private var direction: Direction = .none
@@ -29,7 +29,7 @@ final class CompassPresenterImp: NSObject, CompassPresenter {
     private var target: Direction = .none
     
     // MARK: - Init
-    init(view: CompassView) {
+    init(view: CompassViewProtocol) {
         self.view = view
         super.init()
         setup()
