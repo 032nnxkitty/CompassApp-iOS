@@ -17,7 +17,6 @@ extension Double {
     }
     
     func formatLongitude() -> String {
-        print(self)
         let degrees = Int(self)
         let minutes = Int((self - Double(degrees)) * 60)
         let seconds = Int((self - Double(degrees)) * 3600) - ((minutes) * 60)
