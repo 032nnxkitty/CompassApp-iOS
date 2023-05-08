@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Direction: String {
+enum Direction: String, CaseIterable {
     case north 
     case east
     case south
@@ -16,7 +16,7 @@ enum Direction: String {
     case northWest = "north west"
     case southEast = "south east"
     case southWest = "south west"
-    case unknown
+    case none
     
     init(angle: Double) {
         switch angle {
@@ -37,7 +37,7 @@ enum Direction: String {
         case 292..<337:
             self = .northWest
         default:
-            self = .unknown
+            self = .none
         }
     }
 }

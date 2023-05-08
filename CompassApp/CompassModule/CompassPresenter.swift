@@ -9,23 +9,24 @@ import CoreLocation
 
 protocol CompassPresenter {
     func shareButtonDidTap()
-    func targetButtonDidTap()
-    func addTarget(angle: String?)
-    func deleteTarget()
+    func didSelectTarget(_ index: Int)
+    
+    func getNumberOfTargets() -> Int
+    func getTitleForTarget(at row: Int) -> String
 }
 
-class CompassPresenterImp: NSObject, CompassPresenter {
+final class CompassPresenterImp: NSObject, CompassPresenter {
     private weak var view: CompassView?
     private var locationManager: CLLocationManager!
     
-    private var direction: Direction = .unknown
+    private var direction: Direction = .none
     private var heading:   Double = 0
     
     private var latitude:  Double = 0
     private var longitude: Double = 0
     private var altitude:  Double = 0
     
-    private var targetAngle: Int?
+    private var target: Direction = .none
     
     // MARK: - Init
     init(view: CompassView) {
@@ -39,26 +40,27 @@ class CompassPresenterImp: NSObject, CompassPresenter {
         view?.presentShareController(textToShare: "Latitude: \(latitude)\nLongitude: \(longitude)\nElevation: \(Int(altitude))m")
     }
     
-    func targetButtonDidTap() {
-        if targetAngle == nil {
-            // Add target
-            let currentAngle = Int(locationManager.heading?.trueHeading ?? 0)
-            view?.presentAddTargetAlert(with: "\(currentAngle)")
-        } else {
-            // Delete target
-            view?.presentConfirmationActionSheet()
+    func didSelectTarget(_ index: Int) {
+        target = Direction.allCases[index]
+        
+        var targetText: String?
+        
+        switch target {
+        case .none:
+            targetText = nil
+        default:
+            targetText = "Target: \(target.rawValue.capitalized)"
         }
+        
+        view?.updateTargetInfo(targetText: targetText)
     }
     
-    func addTarget(angle: String?) {
-        guard let angle, let numAngle = Int(angle), (0...360).contains(numAngle) else { return }
-        targetAngle = numAngle
-        view?.updateTargetState(label: "Target: \(numAngle)°", button: "Delete target")
+    func getNumberOfTargets() -> Int {
+        return Direction.allCases.count
     }
     
-    func deleteTarget() {
-        targetAngle = nil
-        view?.updateTargetState(label: "No target", button: "Add target")
+    func getTitleForTarget(at row: Int) -> String {
+        return Direction.allCases[row].rawValue.capitalized
     }
 }
 
@@ -90,11 +92,7 @@ extension CompassPresenterImp: CLLocationManagerDelegate {
             view?.updateDirectionLabel(with: direction.rawValue.capitalized)
         }
         
-        if let targetAngle, (heading - 5...heading + 5).contains(Double(targetAngle)) {
-            view?.setTargetBackground()
-        } else {
-            view?.setNormalBackground()
-        }
+        target == direction ? view?.setTargetBackground() : view?.setNormalBackground()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

@@ -12,19 +12,16 @@ protocol CompassView: AnyObject {
     func updateDirectionLabel(with text: String)
     func updateCoordinates(lat: String, lon: String, alt: String)
     func updateLocality(_ locality: String)
-    func updateTargetState(label: String, button: String)
+    func updateTargetInfo(targetText: String?)
     
     func setNormalBackground()
     func setTargetBackground()
     
     func rotateCompass(angle: Double)
-    
-    func presentAddTargetAlert(with text: String)
-    func presentConfirmationActionSheet()
     func presentShareController(textToShare text: String)
 }
 
-class CompassViewController: UIViewController {
+final class CompassViewController: UIViewController {
     var presenter: CompassPresenter!
     
     // MARK: - UI Elements
@@ -36,8 +33,8 @@ class CompassViewController: UIViewController {
     private let longitudeLabel = UILabel(withMonoFontSize: 17)
     private let altitudeLabel  = UILabel(withMonoFontSize: 17)
     private let angleLabel     = UILabel(textStyle: .largeTitle)
+    
     private let directionLabel = UILabel(textStyle: .largeTitle)
-    private let targetLabel    = UILabel(textStyle: .title3)
     
     
     private var compassImageView: UIImageView = {
@@ -57,8 +54,10 @@ class CompassViewController: UIViewController {
         return toolBar
     }()
     
-    private var targetButton: UIBarButtonItem!
     private var shareButton: UIBarButtonItem!
+    
+    private var targetTextField: UITextField!
+    private var targetPicker: UIPickerView!
     
     // MARK: - View life cycle
     override func viewDidLoad() {
@@ -85,14 +84,10 @@ private extension CompassViewController {
             toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        targetButton = UIBarButtonItem(title: "Add target", style: .plain, target: self, action: #selector(targetButtonDidTap))
+        //targetButton = UIBarButtonItem(title: "Add target", style: .plain, target: self, action: #selector(targetButtonDidTap))
         shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonDidTap))
         
-        toolBar.items = [
-            UIBarButtonItem(systemItem: .flexibleSpace),
-            targetButton,
-            UIBarButtonItem(systemItem: .flexibleSpace),
-            shareButton]
+        toolBar.items = [UIBarButtonItem(systemItem: .flexibleSpace), shareButton]
     }
     
     func configureTopInfoLabels() {
@@ -136,11 +131,20 @@ private extension CompassViewController {
             directionContainerStack.centerXAnchor.constraint(equalTo: compassImageView.centerXAnchor),
             directionContainerStack.centerYAnchor.constraint(equalTo: compassImageView.centerYAnchor),
         ])
+        targetTextField = UITextField()
+        targetTextField.placeholder = "Add target"
+        targetTextField.keyboardType = .numberPad
+        targetTextField.delegate = self
+        targetTextField.textAlignment = .center
+        targetTextField.textColor = .systemRed
         
-        targetLabel.text = "No target"
-        targetLabel.alpha = 0.6
+        targetPicker = UIPickerView()
+        targetPicker.delegate = self
+        targetPicker.dataSource = self
         
-        [angleLabel, directionLabel, targetLabel].forEach { directionContainerStack.addArrangedSubview($0) }
+        targetTextField.inputView = targetPicker
+        
+        [angleLabel, directionLabel, targetTextField].forEach { directionContainerStack.addArrangedSubview($0) }
     }
     
     func createVStack() -> UIStackView {
@@ -157,7 +161,7 @@ private extension CompassViewController {
     }
     
     func targetButtonDidTap() {
-        presenter.targetButtonDidTap()
+        //presenter.targetButtonDidTap()
     }
 }
 
@@ -190,9 +194,8 @@ extension CompassViewController: CompassView {
         }
     }
     
-    func updateTargetState(label: String, button: String) {
-        targetLabel.text = label
-        targetButton.title = button
+    func updateTargetInfo(targetText: String?) {
+        targetTextField.text = targetText
     }
     
     func setNormalBackground() {
@@ -209,37 +212,6 @@ extension CompassViewController: CompassView {
         }
     }
     
-    func presentAddTargetAlert(with text: String)  {
-        var textField = UITextField()
-        
-        let alert = UIAlertController(title: "Add target", message: "", preferredStyle: .alert)
-        alert.addTextField { alertTextField in
-            alertTextField.text = text
-            alertTextField.keyboardType = .numberPad
-            textField = alertTextField
-        }
-        
-        let addAction = UIAlertAction(title: "Add", style: .default) { [weak self]_ in
-            self?.presenter.addTarget(angle: textField.text)
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        
-        alert.addAction(addAction)
-        alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func presentConfirmationActionSheet() {
-        let actionSheet = UIAlertController(title: "Delete target", message: "", preferredStyle: .actionSheet)
-        let confirm = UIAlertAction(title: "Confirm", style: .destructive) { [weak self] _ in
-            self?.presenter.deleteTarget()
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-        [confirm, cancel].forEach { actionSheet.addAction($0) }
-        present(actionSheet, animated: true)
-    }
-    
     func presentShareController(textToShare text: String) {
         let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         activityVC.popoverPresentationController?.barButtonItem = shareButton
@@ -248,6 +220,34 @@ extension CompassViewController: CompassView {
         DispatchQueue.main.async {
             self.present(activityVC, animated: true)
         }
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension CompassViewController: UITextFieldDelegate {
+    
+}
+
+// MARK: - UIPickerViewDataSource
+extension CompassViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        presenter.getNumberOfTargets()
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        presenter.getTitleForTarget(at: row)
+    }
+}
+
+// MARK: - UIPickerViewDelegate
+extension CompassViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        presenter.didSelectTarget(row)
+        targetTextField.resignFirstResponder()
     }
 }
 
