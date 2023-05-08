@@ -11,13 +11,13 @@ enum Direction: String, CaseIterable {
     case none
     
     case north
-    case east
-    case south
-    case west
     case northEast = "north east"
-    case northWest = "north west"
+    case east
     case southEast = "south east"
+    case south
     case southWest = "south west"
+    case west
+    case northWest = "north west"
     
     init(angle: Double) {
         switch angle {
