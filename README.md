@@ -16,3 +16,6 @@ iOS compass app
 - No storyboards
 - Without third-party libraries
 - UNIT tests
+
+## Preview
+[![](https://markdown-videos.deta.dev/youtube/Pnl05yI4Gnw)](https://youtu.be/Pnl05yI4Gnw)
