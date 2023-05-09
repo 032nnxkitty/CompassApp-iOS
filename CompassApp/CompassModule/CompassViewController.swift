@@ -50,9 +50,12 @@ final class CompassViewController: UIViewController {
     
     private let targetTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Add target"
         textField.textAlignment = .center
+        textField.borderStyle = .roundedRect
+        textField.placeholder = "Add target"
+        textField.backgroundColor = .clear
         textField.textColor = .systemRed
+        textField.tintColor = .systemRed
         return textField
     }()
     
@@ -108,10 +111,10 @@ private extension CompassViewController {
     
     func configureCompassComponents() {
         let angleArrow = UIImageView()
-        angleArrow.image = UIImage(systemName: "arrowtriangle.down.fill")
+        angleArrow.image = UIImage(systemName: "arrowtriangle.up.fill")
         angleArrow.translatesAutoresizingMaskIntoConstraints = false
         angleArrow.tintColor = .systemRed
-        view.addSubview(angleArrow)
+        compassImageView.addSubview(angleArrow)
         
         view.addSubview(compassImageView)
         NSLayoutConstraint.activate([
