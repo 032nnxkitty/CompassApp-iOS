@@ -108,7 +108,7 @@ extension CompassPresenterImp: CLLocationManagerDelegate {
         
         view?.updateCoordinates(lat: latitude.formatLatitude(),
                                 lon: longitude.formatLongitude(),
-                                alt: String(format: "%@ %.0fm", "Elev:", altitude))
+                                alt: String(format: "%@ %.0fm", "Elevation:", altitude))
         
         
         CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in

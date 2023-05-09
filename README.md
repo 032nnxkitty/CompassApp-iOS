@@ -12,10 +12,12 @@ iOS compass app
 - MVP (Model View Presenter) architecture
 - Core Location
 - Geocoder
-- CoreData
+- Haptic feedback
 - No storyboards
 - Without third-party libraries
 - UNIT tests
 
 ## Preview
-[![](https://markdown-videos.deta.dev/youtube/Pnl05yI4Gnw)](https://youtu.be/Pnl05yI4Gnw)
+[![](https://markdown-videos.deta.dev/youtube/vztqU5eROEc)](https://youtu.be/vztqU5eROEc)
+
+###### Screenshots: [App Store Screenshots Generator](https://screenshots.pro) , App icon: [Bakery](https://apps.apple.com/nl/app/bakery-simple-icon-creator/id1575220747?mt=12)
