@@ -9,15 +9,6 @@ import XCTest
 @testable import CompassApp
 
 final class CompassAppTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        
-    }
-
-    override func tearDownWithError() throws {
-        
-    }
-    
     func testPragueCoordinatesFormatting() {
         // Given
         let latitude: Double = 50.080050
@@ -26,8 +17,8 @@ final class CompassAppTests: XCTestCase {
         let expectedLongitude = "14° 25' 45'' E"
         
         // When
-        let formattedLatitude = latitude.formatLatitude()
-        let formattedLongitude = longitude.formatLongitude()
+        let formattedLatitude = latitude.formatCoordinate(style: .latitude)
+        let formattedLongitude = longitude.formatCoordinate(style: .longitude)
         
         // Then
         XCTAssertEqual(formattedLatitude, expectedLatitude)
@@ -42,8 +33,8 @@ final class CompassAppTests: XCTestCase {
         let expectedLongitude = "151° 11' 46'' E"
         
         // When
-        let formattedLatitude = latitude.formatLatitude()
-        let formattedLongitude = longitude.formatLongitude()
+        let formattedLatitude = latitude.formatCoordinate(style: .latitude)
+        let formattedLongitude = longitude.formatCoordinate(style: .longitude)
         
         // Then
         XCTAssertEqual(formattedLatitude, expectedLatitude)
@@ -58,8 +49,8 @@ final class CompassAppTests: XCTestCase {
         let expectedLongitude = "104° 56' 56'' W"
         
         // When
-        let formattedLatitude = latitude.formatLatitude()
-        let formattedLongitude = longitude.formatLongitude()
+        let formattedLatitude = latitude.formatCoordinate(style: .latitude)
+        let formattedLongitude = longitude.formatCoordinate(style: .longitude)
         
         // Then
         XCTAssertEqual(formattedLatitude, expectedLatitude)

@@ -7,86 +7,45 @@
 
 import UIKit
 
-typealias CompassViewProtocol = CompassViewInformationUpdating & CompassViewUIUpdating
-
-protocol CompassViewInformationUpdating: AnyObject {
-    func updateHeadingLabel(with text: String)
-    func updateDirectionLabel(with text: String)
-    func updateCoordinates(lat: String, lon: String, alt: String)
-    func updateLocality(_ locality: String)
-    func updateTargetInfo(targetText: String?)
-}
-
-protocol CompassViewUIUpdating: AnyObject {
-    func setNormalBackground()
-    func setTargetBackground()
-    func rotateCompass(angle: Double)
-    func presentShareController(textToShare text: String)
-}
-
 final class CompassViewController: UIViewController {
-    var presenter: CompassPresenterProtocol!
+    // MARK: - View Model
+    let viewModel: CompassViewModel
     
     // MARK: - UI Elements
-    private var coordinatesContainerStack: UIStackView!
-    private var directionContainerStack:   UIStackView!
+    private let directionInfoView = DirectionInfoView()
     
-    private let localityLabel  = UILabel(textStyle: .largeTitle)
-    private let latitudeLabel  = UILabel(withMonoFontSize: 17)
-    private let longitudeLabel = UILabel(withMonoFontSize: 17)
-    private let altitudeLabel  = UILabel(withMonoFontSize: 17)
-    private let angleLabel     = UILabel(textStyle: .largeTitle)
-    private let directionLabel = UILabel(textStyle: .largeTitle)
+    private let locationInfoView = LocationInfoView()
     
     private let compassImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         imageView.image = UIImage(named: "degrees")
+        imageView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .label
         return imageView
     }()
     
-    private let targetTextField: UITextField = {
-        let textField = UITextField()
-        textField.textAlignment = .center
-        textField.borderStyle = .roundedRect
-        textField.placeholder = "Add target"
-        textField.backgroundColor = .clear
-        textField.textColor = .systemRed
-        textField.tintColor = .systemRed
-        return textField
-    }()
+    // MARK: - Init
+    init(viewModel: CompassViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
     
-    private let toolBar: UIToolbar = {
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
-        toolBar.translatesAutoresizingMaskIntoConstraints = false
-        toolBar.tintColor = .systemRed
-        return toolBar
-    }()
-    
-    private lazy var targetPicker: UIPickerView = {
-        let picker = UIPickerView()
-        picker.delegate = self
-        picker.dataSource = self
-        return picker
-    }()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureAppearance()
-        configureToolBar()
         configureCompassComponents()
-        configureDirectionSection()
-        configureLocationLabels()
-    }
-    
-    // MARK: - Event Handling
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        targetTextField.resignFirstResponder()
+        configureDirectionInfoView()
+        configureLocationInfoView()
+        
+        bind()
     }
 }
 
@@ -97,24 +56,12 @@ private extension CompassViewController {
         view.backgroundColor = .systemBackground
     }
     
-    func configureToolBar() {
-        view.addSubview(toolBar)
-        NSLayoutConstraint.activate([
-            toolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            toolBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-        ])
-        
-        toolBar.items = [UIBarButtonItem(systemItem: .flexibleSpace),
-                         UIBarButtonItem(barButtonSystemItem: .action,target: self, action: #selector(shareButtonDidTap))]
-    }
-    
     func configureCompassComponents() {
         let angleArrow = UIImageView()
-        angleArrow.image = UIImage(systemName: "arrowtriangle.up.fill")
+        angleArrow.image = UIImage(systemName: "arrowtriangle.down.fill")
         angleArrow.translatesAutoresizingMaskIntoConstraints = false
         angleArrow.tintColor = .systemRed
-        compassImageView.addSubview(angleArrow)
+        view.addSubview(angleArrow)
         
         view.addSubview(compassImageView)
         NSLayoutConstraint.activate([
@@ -128,126 +75,62 @@ private extension CompassViewController {
         ])
     }
     
-    func configureDirectionSection() {
-        directionContainerStack = createVStack()
-        
-        view.addSubview(directionContainerStack)
+    func configureLocationInfoView() {
+        locationInfoView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(locationInfoView)
         NSLayoutConstraint.activate([
-            directionContainerStack.centerXAnchor.constraint(equalTo: compassImageView.centerXAnchor),
-            directionContainerStack.centerYAnchor.constraint(equalTo: compassImageView.centerYAnchor),
+            locationInfoView.topAnchor.constraint(equalTo: compassImageView.bottomAnchor, constant: 16),
+            locationInfoView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            locationInfoView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
-        
-        targetTextField.inputView = targetPicker
-        
-        [angleLabel, directionLabel, targetTextField].forEach { directionContainerStack.addArrangedSubview($0) }
     }
     
-    func configureLocationLabels() {
-        coordinatesContainerStack = createVStack()
-        
-        view.addSubview(coordinatesContainerStack)
+    func configureDirectionInfoView() {
+        directionInfoView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(directionInfoView)
         NSLayoutConstraint.activate([
-            coordinatesContainerStack.topAnchor.constraint(equalTo: compassImageView.bottomAnchor, constant: 16),
-            coordinatesContainerStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            coordinatesContainerStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            directionInfoView.centerXAnchor.constraint(equalTo: compassImageView.centerXAnchor),
+            directionInfoView.centerYAnchor.constraint(equalTo: compassImageView.centerYAnchor),
         ])
-        [latitudeLabel, longitudeLabel, altitudeLabel].forEach { $0.alpha = 0.7 }
-        [localityLabel, latitudeLabel, longitudeLabel, altitudeLabel].forEach { coordinatesContainerStack.addArrangedSubview($0) }
     }
     
-    func createVStack() -> UIStackView {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.alignment = .center
-        stack.axis = .vertical
-        return stack
-    }
-}
-
-@objc private extension CompassViewController {
-    func shareButtonDidTap() {
-        presenter.shareButtonDidTap()
-    }
-}
-
-// MARK: - CompassView Protocol
-extension CompassViewController: CompassViewProtocol {
-    func updateHeadingLabel(with text: String) {
-        angleLabel.text = text
-    }
-    
-    func updateDirectionLabel(with text: String) {
-        directionLabel.text = text
+    func bind() {
+        viewModel.observableHeading.bind { [weak self] newValue in
+            guard let self else { return }
+            self.directionInfoView.heading = newValue
+        }
         
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-    }
-    
-    func updateCoordinates(lat: String, lon: String, alt: String) {
-        latitudeLabel.text = lat
-        longitudeLabel.text = lon
-        altitudeLabel.text = alt
-    }
-    
-    func updateLocality(_ locality: String) {
-        localityLabel.text = locality
-    }
-    
-    func rotateCompass(angle: Double) {
-        UIView.animate(withDuration: 0.2) {
-            self.compassImageView.transform = CGAffineTransform(rotationAngle: angle)
+        viewModel.observableDirection.bind { [weak self] newValue in
+            guard let self else { return }
+            self.directionInfoView.direction = newValue
+            self.generateImpactFeedback()
         }
-    }
-    
-    func updateTargetInfo(targetText: String?) {
-        targetTextField.text = targetText
-    }
-    
-    func setNormalBackground() {
-        guard view.backgroundColor != .systemBackground else { return }
-        UIView.animate(withDuration: 0.4) {
-            self.view.backgroundColor = .systemBackground
-            self.targetTextField.textColor = .systemRed
+        
+        viewModel.observableRotationAngle.bind { [weak self] newValue in
+            guard let self else { return }
+            UIView.animate(withDuration: 0.2) {
+                self.compassImageView.transform = .init(rotationAngle: newValue)
+            }
         }
-    }
-    
-    func setTargetBackground() {
-        guard view.backgroundColor != .systemGreen else { return }
-        UIView.animate(withDuration: 0.4) {
-            self.view.backgroundColor = .systemGreen
-            self.targetTextField.textColor = .white
+        
+        viewModel.observableLatitude.bind { [weak self] newValue in
+            guard let self else { return }
+            self.locationInfoView.latitude = newValue
         }
-    }
-    
-    // https://stackoverflow.com/questions/58911158/why-is-uiactivityviewcontroller-displaying-auto-constraint-errors-in-console
-    func presentShareController(textToShare text: String) {
-        let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-        DispatchQueue.main.async {
-            self.present(activityVC, animated: true)
+        
+        viewModel.observableLongitude.bind { [weak self] newValue in
+            guard let self else { return }
+            self.locationInfoView.longitude = newValue
+        }
+        
+        viewModel.observableAltitude.bind { [weak self] newValue in
+            guard let self else { return }
+            self.locationInfoView.altitude = newValue
+        }
+        
+        viewModel.observableLocality.bind { [weak self] newValue in
+            guard let self else { return }
+            self.locationInfoView.locality = newValue
         }
     }
 }
-
-// MARK: - UIPickerViewDataSource
-extension CompassViewController: UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return presenter.getNumberOfTargets()
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return presenter.getTitleForTarget(at: row)
-    }
-}
-
-// MARK: - UIPickerViewDelegate
-extension CompassViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        presenter.didSelectTarget(row)
-        targetTextField.resignFirstResponder()
-    }
-}
-

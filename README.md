@@ -1,4 +1,4 @@
-# Compass App for VK Internship
+# Compass App 
 
 iOS compass app
 
@@ -6,18 +6,19 @@ iOS compass app
 ![Swift](https://img.shields.io/badge/-Swift-orange.svg)
 ![UIKit](https://img.shields.io/badge/-UIKit-purple.svg)
 
-<img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/1.png" width="200"> <img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/2.png" width="200"> <img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/3.png" width="200"> <img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/4.png" width="200"> 
+<img src="https://github.com/032nnxkitty/CompassApp-iOS/blob/main/Screenshots/compass.JPEG" width="200"> 
 
 ## Features
-- MVP (Model View Presenter) architecture
+- MVVM architecture using [Observable object](https://github.com/032nnxkitty/SwiftUsefulSnippets/blob/main/Snippets/ObservableObject.swift)
 - Core Location
 - Geocoder
 - Haptic feedback
-- No storyboards
+- Without storyboard
 - Without third-party libraries
 - UNIT tests
 
-## Preview
-[![](https://markdown-videos.deta.dev/youtube/vztqU5eROEc)](https://youtu.be/vztqU5eROEc)
 
-###### Screenshots: [App Store Screenshots Generator](https://screenshots.pro) , App icon: [Bakery](https://apps.apple.com/nl/app/bakery-simple-icon-creator/id1575220747?mt=12)
+
+###### App icon: [Bakery](https://apps.apple.com/nl/app/bakery-simple-icon-creator/id1575220747?mt=12)
+
+> Initially, the application was written on the MVP architecture as a test for an internship in [VK](https://github.com/VKCOM)

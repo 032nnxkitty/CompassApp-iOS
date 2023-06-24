@@ -12,11 +12,17 @@
 		10215D592A057AB30087A892 /* CompassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D582A057AB30087A892 /* CompassViewController.swift */; };
 		10215D5E2A057AB40087A892 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10215D5D2A057AB40087A892 /* Assets.xcassets */; };
 		10215D612A057AB40087A892 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10215D5F2A057AB40087A892 /* LaunchScreen.storyboard */; };
-		10215D692A05AB940087A892 /* CompassPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D682A05AB940087A892 /* CompassPresenter.swift */; };
-		10215D702A05BDF90087A892 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D6F2A05BDF90087A892 /* Direction.swift */; };
-		10215D722A0700A90087A892 /* Double+LatitudeLongitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D712A0700A90087A892 /* Double+LatitudeLongitude.swift */; };
+		10215D692A05AB940087A892 /* CompassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D682A05AB940087A892 /* CompassViewModel.swift */; };
+		10215D702A05BDF90087A892 /* DirectionEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D6F2A05BDF90087A892 /* DirectionEnum.swift */; };
+		10215D722A0700A90087A892 /* Double+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D712A0700A90087A892 /* Double+Formatting.swift */; };
 		10215D742A072F980087A892 /* UILabel+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D732A072F980087A892 /* UILabel+Init.swift */; };
 		10215D7D2A07EA1D0087A892 /* CompassAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10215D7C2A07EA1D0087A892 /* CompassAppTests.swift */; };
+		104415562A44F69E00B3B240 /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104415552A44F69E00B3B240 /* Assembly.swift */; };
+		104415582A44F9DC00B3B240 /* UIStackView+VStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104415572A44F9DC00B3B240 /* UIStackView+VStack.swift */; };
+		10A1C46C2A4658B50051BE7D /* ObservableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1C46B2A4658B40051BE7D /* ObservableObject.swift */; };
+		10A1C46F2A46F8410051BE7D /* LocationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1C46E2A46F8410051BE7D /* LocationInfoView.swift */; };
+		10A1C4712A46FB740051BE7D /* UIViewController+ImpactFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1C4702A46FB740051BE7D /* UIViewController+ImpactFeedback.swift */; };
+		10A1C4732A46FEF40051BE7D /* DirectionInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A1C4722A46FEF40051BE7D /* DirectionInfoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,12 +43,18 @@
 		10215D5D2A057AB40087A892 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		10215D602A057AB40087A892 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		10215D622A057AB40087A892 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		10215D682A05AB940087A892 /* CompassPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompassPresenter.swift; sourceTree = "<group>"; };
-		10215D6F2A05BDF90087A892 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
-		10215D712A0700A90087A892 /* Double+LatitudeLongitude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+LatitudeLongitude.swift"; sourceTree = "<group>"; };
+		10215D682A05AB940087A892 /* CompassViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompassViewModel.swift; sourceTree = "<group>"; };
+		10215D6F2A05BDF90087A892 /* DirectionEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionEnum.swift; sourceTree = "<group>"; };
+		10215D712A0700A90087A892 /* Double+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Formatting.swift"; sourceTree = "<group>"; };
 		10215D732A072F980087A892 /* UILabel+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Init.swift"; sourceTree = "<group>"; };
 		10215D7A2A07EA1D0087A892 /* CompassAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CompassAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		10215D7C2A07EA1D0087A892 /* CompassAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompassAppTests.swift; sourceTree = "<group>"; };
+		104415552A44F69E00B3B240 /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
+		104415572A44F9DC00B3B240 /* UIStackView+VStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+VStack.swift"; sourceTree = "<group>"; };
+		10A1C46B2A4658B40051BE7D /* ObservableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObject.swift; sourceTree = "<group>"; };
+		10A1C46E2A46F8410051BE7D /* LocationInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoView.swift; sourceTree = "<group>"; };
+		10A1C4702A46FB740051BE7D /* UIViewController+ImpactFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ImpactFeedback.swift"; sourceTree = "<group>"; };
+		10A1C4722A46FEF40051BE7D /* DirectionInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionInfoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +108,7 @@
 			children = (
 				10215D542A057AB30087A892 /* AppDelegate.swift */,
 				10215D562A057AB30087A892 /* SceneDelegate.swift */,
+				104415552A44F69E00B3B240 /* Assembly.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -103,11 +116,13 @@
 		10215D6B2A05B1D20087A892 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				10A1C46D2A46F7CE0051BE7D /* Subviews */,
 				10215D752A07304D0087A892 /* Extensions */,
 				10215D5D2A057AB40087A892 /* Assets.xcassets */,
 				10215D5F2A057AB40087A892 /* LaunchScreen.storyboard */,
 				10215D622A057AB40087A892 /* Info.plist */,
-				10215D6F2A05BDF90087A892 /* Direction.swift */,
+				10215D6F2A05BDF90087A892 /* DirectionEnum.swift */,
+				10A1C46B2A4658B40051BE7D /* ObservableObject.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -116,7 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				10215D582A057AB30087A892 /* CompassViewController.swift */,
-				10215D682A05AB940087A892 /* CompassPresenter.swift */,
+				10215D682A05AB940087A892 /* CompassViewModel.swift */,
 			);
 			path = CompassModule;
 			sourceTree = "<group>";
@@ -124,8 +139,10 @@
 		10215D752A07304D0087A892 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				10215D712A0700A90087A892 /* Double+LatitudeLongitude.swift */,
+				10215D712A0700A90087A892 /* Double+Formatting.swift */,
 				10215D732A072F980087A892 /* UILabel+Init.swift */,
+				104415572A44F9DC00B3B240 /* UIStackView+VStack.swift */,
+				10A1C4702A46FB740051BE7D /* UIViewController+ImpactFeedback.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -136,6 +153,15 @@
 				10215D7C2A07EA1D0087A892 /* CompassAppTests.swift */,
 			);
 			path = CompassAppTests;
+			sourceTree = "<group>";
+		};
+		10A1C46D2A46F7CE0051BE7D /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				10A1C46E2A46F8410051BE7D /* LocationInfoView.swift */,
+				10A1C4722A46FEF40051BE7D /* DirectionInfoView.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,13 +264,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				10215D722A0700A90087A892 /* Double+LatitudeLongitude.swift in Sources */,
-				10215D692A05AB940087A892 /* CompassPresenter.swift in Sources */,
+				10215D722A0700A90087A892 /* Double+Formatting.swift in Sources */,
+				104415562A44F69E00B3B240 /* Assembly.swift in Sources */,
+				10215D692A05AB940087A892 /* CompassViewModel.swift in Sources */,
 				10215D592A057AB30087A892 /* CompassViewController.swift in Sources */,
+				10A1C46F2A46F8410051BE7D /* LocationInfoView.swift in Sources */,
+				10A1C4732A46FEF40051BE7D /* DirectionInfoView.swift in Sources */,
 				10215D742A072F980087A892 /* UILabel+Init.swift in Sources */,
+				10A1C46C2A4658B50051BE7D /* ObservableObject.swift in Sources */,
+				10A1C4712A46FB740051BE7D /* UIViewController+ImpactFeedback.swift in Sources */,
 				10215D552A057AB30087A892 /* AppDelegate.swift in Sources */,
-				10215D702A05BDF90087A892 /* Direction.swift in Sources */,
+				10215D702A05BDF90087A892 /* DirectionEnum.swift in Sources */,
 				10215D572A057AB30087A892 /* SceneDelegate.swift in Sources */,
+				104415582A44F9DC00B3B240 /* UIStackView+VStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,8 +8,7 @@
 import Foundation
 
 enum Direction: String, CaseIterable {
-    case none
-    
+    // MARK: - Cases
     case north
     case northEast = "north east"
     case east
@@ -18,7 +17,9 @@ enum Direction: String, CaseIterable {
     case southWest = "south west"
     case west
     case northWest = "north west"
+    case none
     
+    // MARK: - Init
     init(angle: Double) {
         switch angle {
         case 337...360, 0..<22:
@@ -40,5 +41,10 @@ enum Direction: String, CaseIterable {
         default:
             self = .none
         }
+    }
+    
+    // MARK: - Properties
+    var capitalizedString: String {
+        return self.rawValue.capitalized
     }
 }

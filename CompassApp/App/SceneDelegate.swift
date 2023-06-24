@@ -12,12 +12,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard let windowScene = scene as? UIWindowScene else { return }
         
-        // MARK: Create Compass Module
-        let compassView = CompassViewController()
-        let compassPresenter = CompassPresenterImp(view: compassView)
-        compassView.presenter = compassPresenter
+        let compassView = Assembly.setupCompassModule()
         
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = UINavigationController(rootViewController: compassView)
